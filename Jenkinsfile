@@ -14,8 +14,7 @@ pipeline {
             }
             steps {
                 sh  '''
-                pwd
-                sh 'echo testing!!!!!!!!'
+                echo testingfromslave01
                 whoami
                 '''
                 dir('go-web-app'){
