@@ -17,11 +17,8 @@ pipeline {
                 echo testingfromslave01
                 whoami
                 '''
-                dir('go-web-app'){
-                    sh 'pwd'
-                    sh 'go version'
-                    sh 'go test'
-                }
+                sh 'go version'
+                sh 'go test'
             }
         }
         stage('master') {
