@@ -11,7 +11,7 @@ pipeline {
                 sh 'ls'
                 sh 'pwd'
                 sh 'whoami'
-                sh './validatedirectory.sh'
+                //sh './validatedirectory.sh'
                 sh 'git clone git@github.com:andres-amezquita01/go-web-app.git'
                 sh 'cd go-web-app'
                 sh 'pwd'
