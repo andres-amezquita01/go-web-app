@@ -2,23 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('validate&clone') {
-            agent {
-                label 'tests'
-            }
-            steps {
-                echo '****From Slave 01****'
-                sh 'ls'
-                sh 'pwd'
-                sh 'whoami'
-                //sh './validatedirectory.sh'
-                //sh 'git clone git@github.com:andres-amezquita01/go-web-app.git'
-                //sh 'cd go-web-app'
-                sh 'pwd'
-                echo '****End Slave 01****'
-            }
-        }
-            stage('test') {
+        stage('test') {
             tools {
                 go 'Go-1.20.3'
             }
@@ -30,31 +14,20 @@ pipeline {
             }
             steps {
                 sh  '''
-                echo "hello in multi quotes"
                 pwd
-                pwd
-                pwd
+                sh 'echo testing!!!!!!!!'
                 whoami
                 '''
-                echo '****From Slave 01****'
-                sh 'echo testing!!!!!!!!'
-                sh 'ls'
-                sh 'pwd'
-                sh 'whoami'
                 dir('go-web-app'){
                     sh 'pwd'
                     sh 'go version'
                     sh 'go test'
                 }
-                // sh 'cd go-web-app'
-                // sh 'pwd'
-                //sh 'rm -Rf go-web-app'
-                echo '****End Slave 01****'
             }
         }
         stage('master') {
             steps {
-                echo 'Hello World'
+                echo 'Hello World from Master'
                 sh 'ls'
                 sh 'pwd'
                 sh 'whoami'
