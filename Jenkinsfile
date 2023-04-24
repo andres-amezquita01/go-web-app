@@ -12,8 +12,8 @@ pipeline {
                 sh 'pwd'
                 sh 'whoami'
                 //sh './validatedirectory.sh'
-                sh 'git clone git@github.com:andres-amezquita01/go-web-app.git'
-                sh 'cd go-web-app'
+                //sh 'git clone git@github.com:andres-amezquita01/go-web-app.git'
+                //sh 'cd go-web-app'
                 sh 'pwd'
                 echo '****End Slave 01****'
             }
