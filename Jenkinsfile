@@ -29,6 +29,13 @@ pipeline {
                 label 'tests'
             }
             steps {
+                sh  '''
+                echo "hello in multi quotes"
+                pwd
+                pwd
+                pwd
+                whoami
+                '''
                 echo '****From Slave 01****'
                 sh 'echo testing!!!!!!!!'
                 sh 'ls'
