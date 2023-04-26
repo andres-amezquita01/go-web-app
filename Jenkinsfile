@@ -26,7 +26,9 @@ pipeline {
             steps{
               sh """
                    docker build -t slave02/${env.BUILD_NUMBER} .
+                   docker tag slave02/${env.BUILD_NUMBER} andresamezquita01/mygoapp:latest
                    docker tag slave02/${env.BUILD_NUMBER} andresamezquita01/mygoapp:${env.BUILD_NUMBER}
+
               """
             }
         }
@@ -53,7 +55,8 @@ pipeline {
               skipDefaultCheckout true
             }
             steps{
-                   sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                                     
+                   //sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"
+                   sh "docker push andresamezquita01/mygoapp --tag andresamezquita01/mygoapp:latest andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                              
             }
         }
 
