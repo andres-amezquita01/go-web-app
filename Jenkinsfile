@@ -84,4 +84,12 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            node('docker'){
+                sh 'docker rmi -f $(docker images -a -q)'
+                sh 'docker logout'
+            }
+        }
+    }    
 }
