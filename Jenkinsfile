@@ -56,7 +56,8 @@ pipeline {
             }
             steps{
                    //sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"
-                   sh "docker push andresamezquita01/mygoapp --tag andresamezquita01/mygoapp:latest andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                              
+                   sh 'docker images'
+                   sh "docker push --all-tags andresamezquita01/mygoapp"                              
             }
         }
 
