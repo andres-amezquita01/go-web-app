@@ -37,6 +37,9 @@ pipeline {
             environment {
                         DOCKERHUB_CREDENTIALS = credentials('andresamezquita01-dockerhub')
             }
+            options {
+              skipDefaultCheckout true
+            }
             steps {                            
                     sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
             }
@@ -46,13 +49,18 @@ pipeline {
             agent {
                   label "docker"
             }
+            options {
+              skipDefaultCheckout true
+            }
             steps{
                    sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                                     
-
             }
         }
 
         stage('master') {
+            options {
+              skipDefaultCheckout true
+            }
             steps {
                 echo 'Hello World from Master'
                 sh 'ls'
