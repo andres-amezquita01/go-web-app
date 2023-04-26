@@ -23,9 +23,6 @@ pipeline {
             agent {
                   label "docker"
             }
-            environment {
-                        DOCKERHUB_CREDENTIALS = credentials('andresamezquita01-dockerhub')
-            }
             steps{
               sh """
                    docker build -t slave02/${env.BUILD_NUMBER} .
@@ -33,7 +30,7 @@ pipeline {
               """
             }
         }
-        stage('login-push-docker-img') {
+        stage('login-dockerhub') {
            agent {
                   label "docker"
             }
@@ -42,27 +39,18 @@ pipeline {
             }
             steps {                            
                     sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                    sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                                     
             }
         }
 
-//         stage('Push') {
-//             agent {
-//                   label "docker"
-//             }
-//             environment {
-//                         DOCKERHUB_CREDENTIALS = credentials('andresamezquita01-dockerhub')
-//             }
-//             steps {
-//                 sh 'pwd'
-//                 sh 'ls'
-//                     sh '''
-//                         docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}
-//                         docker rmi -f $(docker images -a -q)
-//                         docker logout
-//                     '''
-//             }
-//         }
+        stage('push-docker-img') {
+            agent {
+                  label "docker"
+            }
+            steps{
+                   sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                                     
+
+            }
+        }
 
         stage('master') {
             steps {
