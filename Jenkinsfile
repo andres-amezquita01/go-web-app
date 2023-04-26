@@ -44,6 +44,10 @@ pipeline {
             }
             steps {
                   sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                  sh  'docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}'
+                  sh  'docker rmi -f $(docker images -a -q)'
+                  sh  'docker logout'
+
             }
         }
 
@@ -57,11 +61,11 @@ pipeline {
             steps {
                 //sh 'pwd'
                 //sh 'ls'
-                    sh '''
-                    docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}
-                    docker rmi -f $(docker images -a -q)
-                    docker logout
-                    '''
+        //            sh '''
+//                    docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}
+  //                  docker rmi -f $(docker images -a -q)
+    //                docker logout
+      //              '''
             }
         }
 
