@@ -14,14 +14,12 @@ pipeline {
             }
             steps {
                 sh  '''
-                echo testingfromslave01
-                whoami
                 go version
                 go test
                 '''
             }
         }
-        stage('build-docker-img'){
+        stage('build-tag-docker-img'){
             agent {
                   label "docker"
             }
@@ -35,25 +33,16 @@ pipeline {
               """
             }
         }
-        stage('Login') {
+        stage('login-push-docker-img') {
            agent {
                   label "docker"
             }
             environment {
                         DOCKERHUB_CREDENTIALS = credentials('andresamezquita01-dockerhub')
             }
-            steps {
-//                   sh """
-//                     echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-//                     docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}
-//                     docker rmi -f $(docker images -a -q)
-//                     docker logout
-//                     """                         
+            steps {                            
                     sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                    sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"
-                    //sh "docker rmi -f $(docker images -a -q)"
-                    sh "docker logout"
-                    
+                    sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                                     
             }
         }
 
