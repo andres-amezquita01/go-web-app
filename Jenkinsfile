@@ -57,11 +57,11 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls'
-                    sh """
+                    sh '''
                     docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}
                     docker rmi -f $(docker images -a -q)
                     docker logout
-                    """
+                    '''
             }
         }
 
