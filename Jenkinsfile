@@ -14,19 +14,14 @@ pipeline {
             }
             steps {
                 sh  '''
-                echo testingfromslave01
-                whoami
                 go version
                 go test
                 '''
             }
         }
-        stage('build-docker-img'){
+        stage('build-tag-docker-img'){
             agent {
                   label "docker"
-            }
-            environment {
-                        DOCKERHUB_CREDENTIALS = credentials('andresamezquita01-dockerhub')
             }
             steps{
               sh """
@@ -35,35 +30,37 @@ pipeline {
               """
             }
         }
-        stage('Login') {
+        stage('login-dockerhub') {
            agent {
                   label "docker"
             }
             environment {
                         DOCKERHUB_CREDENTIALS = credentials('andresamezquita01-dockerhub')
             }
-            steps {
-                  sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            options {
+              skipDefaultCheckout true
+            }
+            steps {                            
+                    sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
             }
         }
 
-        stage('Push') {
+        stage('push-docker-img') {
             agent {
                   label "docker"
             }
-            environment {
-                        DOCKERHUB_CREDENTIALS = credentials('andresamezquita01-dockerhub')
+            options {
+              skipDefaultCheckout true
             }
-            steps {
-                sh 'pwd'
-                sh 'ls'
-                    sh """
-                    docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}
-                    """
+            steps{
+                   sh "docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}"                                     
             }
         }
 
         stage('master') {
+            options {
+              skipDefaultCheckout true
+            }
             steps {
                 echo 'Hello World from Master'
                 sh 'ls'
@@ -72,14 +69,12 @@ pipeline {
             }
         }
     }
-  post {
-       agent{
-            label "docker"
-        }
+    post {
         always {
-          sh 'docker rmi -f $(docker images -a -q)'
-          sh 'docker logout'
+            node('docker'){
+                sh 'docker rmi -f $(docker images -a -q)'
+                sh 'docker logout'
+            }
         }
-  }
-
+    }    
 }
