@@ -58,7 +58,7 @@ pipeline {
                 sh 'pwd'
                 sh 'ls'
                     sh """
-                    docker push andresamezquita01/mygoapp:"${env.BUILD_NUMBER}"
+                    docker push andresamezquita01/mygoapp:${env.BUILD_NUMBER}
                     docker rmi -f $(docker images -a -q)
                     docker logout
                     """
