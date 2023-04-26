@@ -6,7 +6,7 @@ import (
 )
 
 func helloWorldPage(w http.ResponseWriter, r *http.Request){
-	fmt.Fprint(w, "hello world this is the last!")
+	fmt.Fprint(w, "hello world this is the last tagg!")
 }
 
 func main() {
