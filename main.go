@@ -36,9 +36,15 @@ func AddNumbers(w http.ResponseWriter, r *http.Request) {
 func ShowAddNumbers(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Now, you are going to add two numbers!!!")
 }
+
+func ShowSubstraction(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Now, you are in the substraction area!!!")
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/add", AddNumbers).Methods("POST")
 	r.HandleFunc("/add", ShowAddNumbers).Methods("GET")
+	r.HandleFunc("/substraction", ShowSubstraction).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
