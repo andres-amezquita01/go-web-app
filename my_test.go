@@ -1,51 +1,43 @@
 package main
 
 import (
-    "fmt"
-    "testing"
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
-func IntMin(a, b int) int {
-    if a < b {
-        return a
-    }
-    return b
-}
+func TestAddNumbers(t *testing.T) {
+	// Define la solicitud para sumar 2 y 3
+	request := AddRequest{Num1: 2, Num2: 3}
+	jsonReq, _ := json.Marshal(request)
 
-func TestIntMinBasic(t *testing.T) {
-    ans := IntMin(2, -2)
-    if ans != -2 {
+	// Crea una solicitud HTTP POST con la solicitud JSON
+	req, err := http.NewRequest("POST", "/add", bytes.NewBuffer(jsonReq))
+	if err != nil {
+		t.Fatal(err)
+	}
 
-        t.Errorf("IntMin(2, -2) = %d; want -2", ans)
-    }
-}
+	// Crea un objeto "ResponseRecorder" para recibir la respuesta
+	rr := httptest.NewRecorder()
 
-func TestIntMinTableDriven(t *testing.T) {
-    var tests = []struct {
-        a, b int
-        want int
-    }{
-        {0, 1, 0},
-        {1, 0, 0},
-        {2, -2, -2},
-        {0, -1, -1},
-        {-1, 0, -1},
-    }
+	// Llama a la función "AddNumbers" con la solicitud y el objeto "ResponseRecorder"
+	handler := http.HandlerFunc(AddNumbers)
+	handler.ServeHTTP(rr, req)
 
-    for _, tt := range tests {
+	// Verifica que el código de estado sea 200 OK
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
 
-        testname := fmt.Sprintf("%d,%d", tt.a, tt.b)
-        t.Run(testname, func(t *testing.T) {
-            ans := IntMin(tt.a, tt.b)
-            if ans != tt.want {
-                t.Errorf("got %d, want %d", ans, tt.want)
-            }
-        })
-    }
-}
-
-func BenchmarkIntMin(b *testing.B) {
-    for i := 0; i < b.N; i++ {
-        IntMin(1, 2)
-    }
+	// Decodifica la respuesta JSON y verifica el resultado
+	var response AddResponse
+	if err := json.NewDecoder(rr.Body).Decode(&response); err != nil {
+		t.Fatal(err)
+	}
+	expected := 5
+	if response.Result != expected {
+		t.Errorf("Handler returned unexpected result: got %v want %v", response.Result, expected)
+	}
 }
