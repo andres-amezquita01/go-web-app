@@ -34,7 +34,7 @@ func AddNumbers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 func ShowAddNumbers(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "You are going to add two numbers!")
+		fmt.Fprint(w, "Now, you are going to add two numbers!")
 }
 func main() {
 	r := mux.NewRouter()
