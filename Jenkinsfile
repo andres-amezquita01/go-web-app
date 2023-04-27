@@ -64,10 +64,7 @@ pipeline {
               skipDefaultCheckout true
             }
             steps {
-                echo 'Hello World from Master'
-                sh 'ls'
-                sh 'pwd'
-                sh 'whoami'
+                echo 'I am jenkins master and the job is done!'
             }
         }
     }
